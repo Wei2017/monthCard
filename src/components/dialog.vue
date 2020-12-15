@@ -268,7 +268,7 @@
                 </div>
               </div>
               <div class="dialog_item_address">
-                <!-- <van-icon name="location" /> -->
+                <van-icon name="location" />
                 <span class="address_text">{{ item.parkinglotName }}</span>
               </div>
             </div>
@@ -310,10 +310,13 @@
 </template>
 
 <script>
+import { Icon } from "vant";
 
 export default {
   name: 'Dialog',
-
+  components: {
+    [Icon.name]: Icon,
+  },
   props: {
     show: {
       type: Boolean,

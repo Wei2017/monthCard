@@ -7,27 +7,27 @@ import axios from "axios";
 // Router.prototype.push = function push(location) {
 //   return originalPush.call(this, location).catch(err => err)
 // }
-export default {
+ 
   // 正则验证手机号
-  checkPhone(phone) {
+export const checkPhone = phone => {
     if (!(/^1[3456789]\d{9}$/.test(phone))) {
       return false;
     }
     return true
-  },
+  }
 
   // 未获取到用户id 跳转授权页
-  userAuthorStatus() {
+export const userAuthorStatus = () => {
     let userId = localStorage.getItem('userId')
     if (!userId) {
       router.push("/wxAuthor");
       return false
     }
     return true
-  },
+  }
 
   // 获取用户所在城市
-  getUserCity(callBack) {
+export const getUserCity = (callBack) => {
     var geolocation = new window.BMap.Geolocation();
     var gc = new window.BMap.Geocoder();
     geolocation.getCurrentPosition((a) => {
@@ -37,22 +37,22 @@ export default {
       });
       callBack(a)
     });
-  },
+  }
   /**
    * 两个数组之间 进行匹配
    * @param {Array} arr1  
    * @param {Array} arr2 
    * @return {Array} 返回不相等的数组
    */
-  getArrDifference(arr1, arr2) {
+export const getArrDifference = (arr1, arr2) => {
     return arr1.concat(arr2).filter(function (v, i, arr) {
       return arr.indexOf(v) === arr.lastIndexOf(v);
     })
-  },
+  }
 
 
 
-  ajax(option) {
+export const ajax = (option) => {
     var Method = option.method || "GET"
     var data = option.data || {} // {pageNum:1, pageSize:10}
     var url = axios.defaults.baseURL + option.url   // http://localhost:3000/api/film/getList
@@ -92,9 +92,9 @@ export default {
         option.success(res)
       }
     }
-  },
+  }
   //日期格式化
-  formatDate(date,format){
+export const formatDate = (date, format) => {
     var o = {
       "M+": date.getMonth() + 1, // month
       "d+": date.getDate(), // day
@@ -112,4 +112,3 @@ export default {
         format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
     return format;
   }
-}

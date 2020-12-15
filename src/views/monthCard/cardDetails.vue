@@ -6,12 +6,10 @@
     </template>
     <template v-else>
       <div class="header_swiper row">
-        <swiper :options="swiperOption">
-          <swiper-slide
-            v-for="(item,index) in swiperList"
-            :key="index"
-            :style="{'background':cardDetails.style.bgColor,'boxShadow':cardDetails.style.bgShadow}"
-          >
+          <div class="header-silder" 
+              v-for="(item,index) in swiperList"
+              :key="index"
+              :style="{'background':cardDetails.style.bgColor,'boxShadow':cardDetails.style.bgShadow}">
             <div class="swiper_item_info column">
               <div class="top_info">
                 <div class="my_card_title">我的月卡</div>
@@ -26,8 +24,7 @@
               class="right_date"
               :style="{backgroundImage:'url(' + (rightBg) + ')'}"
             >有效期至{{absDate}}</div>
-          </swiper-slide>
-        </swiper>
+          </div>
       </div>
       <div class="card_content">
         <div class="con_list column">
@@ -89,8 +86,6 @@ import {
 } from "network/index";
 import dialogs from "components/dialog.vue";
 import { Icon, Loading } from "vant";
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import axios from "axios";
 export default {
   data() {
     return {
@@ -118,7 +113,7 @@ export default {
       },
       recordId: "",
       rightBg: require("@/assets/img/yuekabg2@2x.png"),
-      userId: localStorage.getItem("userId"), //355f51a76a584db181cc669c9d3b4db1
+      userId: '355f51a76a584db181cc669c9d3b4db1',
       userInfo: JSON.parse(localStorage.getItem("userInfo")),
       // openId:"ow7iCwjEOTrEBoW2KkWxThss8nAE",
       payStatus: true,
@@ -319,11 +314,14 @@ export default {
   width: 654px;
   height: 328px;
 }
-.swiper-slide {
+.header-silder{
+  width: 654px;
+  height: 100%;
   padding: 78px 0 32px 40px;
   box-sizing: border-box;
   border-radius: 16px;
   opacity: 0.95;
+  position: relative;
 }
 .swiper_item_info {
   height: 100%;
@@ -431,7 +429,7 @@ export default {
   /* background: url("../../assets/img/yuekabg2@2x.png") no-repeat; */
   background-size: 100% 100%;
   position: absolute;
-  right: -4px;
+  right: -2px;
   top: 0;
   padding: 16px 0 0 20px;
   box-sizing: border-box;

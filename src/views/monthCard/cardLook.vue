@@ -225,7 +225,7 @@ export default {
     this.recordId = recordId;
     this.headerStyle.background = bgColor;
     this.headerStyle.boxShadow = bgShadow;
-    // if(this.common.userAuthorStatus()){
+    // if(this.$util.userAuthorStatus()){
     this.init();
     // }
     console.log(this.$route.query);
@@ -300,7 +300,7 @@ export default {
               arr.push(data[j].carLicense);
             }
             // arr 与 vehList 匹配  不相等的拿出来
-            let ppArr = this.common.getArrDifference(arr, vehList);
+            let ppArr = this.$util.getArrDifference(arr, vehList);
             for (let i = 0; i < ppArr.length; i++) {
               this.option.push({ name: ppArr[i], className: "" });
             }

@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       myCardList: [],
-      userId:localStorage.getItem("userId"),//'89b989fb92d24c88b4b08fc85144e7ed', //
+      userId:'355f51a76a584db181cc669c9d3b4db1',//localStorage.getItem("userId"),//'89b989fb92d24c88b4b08fc85144e7ed', //
       rightBg: require("assets/img/card-bg.png"),
       showContainer:false,
     };

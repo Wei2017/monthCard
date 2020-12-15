@@ -1,10 +1,10 @@
 module.exports = {
   presets: [
-    '@vue/app'
+    "@vue/cli-plugin-babel/preset"
   ],
   "plugins": [
     [
-      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-syntax-dynamic-import'
     ]
   ]
 };

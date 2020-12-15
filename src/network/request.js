@@ -72,13 +72,11 @@ export function reqMethod(url, obj = {}, method = 'POST') {
     const { data: { data, message, status} } = res;
     
     // 输出res.data中的以下三个属性的值
-    // console.log(success,data,returnCode)
+    // console.log( data, message, status )
 
     if(status == '200'){
       return res.data
     }
-
-    // alert(res.data['错误信息'])
 
     return Promise.reject(res.data);
   }, err => {
