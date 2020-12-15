@@ -22,7 +22,7 @@ const MyMonthCard = () => import('views/monthCard/myMonthCard')
 const routes = [
   {
     path: '',
-    redirect: '/carAuthor/wxAuthor'
+    redirect: '/wxAuthor'
   },
   {
     path: '/wxAuthor',

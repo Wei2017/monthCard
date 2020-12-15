@@ -22,30 +22,33 @@ export default {
     };
   },
   mounted() {
-    if (window.location.origin == "https://mtest.scsonic.cn") {
-      //测试
-      this.appid = "wxf93d34d4624ff859";
-    } else if (window.location.origin == "https://m.scsonic.cn") {
-      //正式
-      this.appid = "wx3290b40f0f472c97";
-    } else if (window.location.origin == "https://mgray.scsonic.cn") {
-      //灰度
-      this.appid = "wx3290b40f0f472c97";
+    let that = this,
+        { NODE_ENV } = process.env
+    console.log(NODE_ENV)
+    switch(NODE_ENV) {
+      case 'development':
+        this.appid = "wxf93d34d4624ff859"; //测试
+        break;
+      case 'production':   
+        this.appid = "wx3290b40f0f472c97"; //正式
+        break;
+      case 'gray':
+        this.appid = "wx3290b40f0f472c97"; //灰度
+        break;
     }
 
-    const obj = this.$route.query;
+    const obj = that.$route.query;
     if (obj.hasOwnProperty("s")) {
-      this.isshow = false;
+      that.isshow = false;
       //智谷汇获取根据code获取用户信息
-      this.getzghUserId(obj);
+      that.getzghUserId(obj);
       localStorage.setItem("zghS", obj.s);
     } else {
       localStorage.setItem("zghS", "");
-      this.isshow = true;
-      let code = this.getQueryVariable("code");
+      that.isshow = true;
+      let code = that.getQueryVariable("code");
       if (code != "") {
-        this.$toast("跳转中");
-        let _this = this;
+        that.$toast("跳转中");
         let param = {
           code: code
         };
@@ -56,17 +59,11 @@ export default {
               localStorage.setItem("userInfo", JSON.stringify(res.data));
               localStorage.setItem("userId", res.data.userId);
               localStorage.setItem("unionId", res.data.unionId);
-              if (_this.city == "成都市") {
-                window.location.href =
-                  window.location.origin +
-                  window.location.pathname +
-                  "#/chuanBind";
-              } else {
-                window.location.href =
-                  window.location.origin + window.location.pathname + "#/mine";
-              }
+
+              // 通过城市名跳转不同页面
+              that.cityJump(that.city)
             } else {
-              this.$toast("授权失败");
+              that.$toast("授权失败");
               window.location.href =
                 window.location.origin +
                 window.location.pathname +
@@ -78,13 +75,8 @@ export default {
           });
       }
       if (localStorage.getItem("userInfo") != null) {
-        if (this.city == "成都市") {
-          window.location.href =
-            window.location.origin + window.location.pathname + "#/chuanBind";
-        } else {
-          window.location.href =
-            window.location.origin + window.location.pathname + "#/mine";
-        }
+        // 通过城市名跳转不同页面
+        that.cityJump(that.city)
       }
     }
 
@@ -120,12 +112,16 @@ export default {
             localStorage.setItem("userInfo", JSON.stringify(ret.data));
             localStorage.setItem("userId", ret.data.registrationId);
             localStorage.setItem("unionId", ret.data.unionId);
-            if (that.city == "成都市") {
-              window.location.href = window.location.origin + window.location.pathname +"#/chuanBind";
-            } else {
-              window.location.href =
-              window.location.origin + window.location.pathname + "#/mine";
-            }
+            // 通过城市名跳转不同页面
+            that.cityJump(that.city)
+             // if (that.city == "成都市") {
+            //   this.$router.push('/chuanBind')
+            //   // window.location.href = window.location.origin + window.location.pathname +"#/chuanBind";
+            // } else {
+            //   this.$router.push('/mine')
+            //   // window.location.href =
+            //   // window.location.origin + window.location.pathname + "#/mine";
+            // }
           }
         } else {
           this.$toast("授权失败，请重新授权");
@@ -136,14 +132,8 @@ export default {
       });
     },
     authorBtn() {
-      console.log(123);
       let href = encodeURIComponent(window.location.href);
-      window.location.href =
-        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-        this.appid +
-        "&redirect_uri=" +
-        href +
-        "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appid}&redirect_uri=${href}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
     },
     getQueryVariable(variable) {
       var query = window.location.search.substring(1);
@@ -155,6 +145,13 @@ export default {
         }
       }
       return false;
+    },
+    cityJump(city) {
+      if(city == '成都市'){
+        this.$router.push('/chuanBind')
+      }else{
+        this.$router.push('/mine')
+      }
     }
   }
 };

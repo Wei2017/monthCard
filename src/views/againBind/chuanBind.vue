@@ -61,7 +61,6 @@
 import { retCard, getMyMonthCard } from "network/index";
 import plateNumbers from "components/plateNumber";
 import dialogs from "components/dialog";
-import { Toast } from "vant";
 export default {
   name: 'ChuanBind',
   data() {
@@ -88,7 +87,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.common.userAuthorStatus()
+      this.$util.userAuthorStatus()
     })
   },
 
@@ -163,9 +162,9 @@ export default {
     // 找回会员卡
     retrieveTap() {
       // 验证用户输入手机号
-      if (!this.common.checkPhone(this.phoneNum)) {
+      if (!this.$util.checkPhone(this.phoneNum)) {
         console.log("手机号输入错误");
-        Toast("手机号输入错误");
+        this.$toast("手机号输入错误");
         return;
       }
       this.num++;

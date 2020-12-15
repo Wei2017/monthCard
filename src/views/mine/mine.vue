@@ -253,15 +253,16 @@ body {
 }
 .mine_body {
   position: relative;
+  top: -100px;
   /* padding-top: 32px; */
 }
 .carNum {
-  width: 722px;
+  width: 100%;
   height: 176px;
-  position: absolute;
+  /* position: absolute;
   top: -180px;
   left: 14px;
-  right: 0;
+  right: 0; */
   padding: 40px 0 0 62px;
   box-sizing: border-box;
   color: #fff;
