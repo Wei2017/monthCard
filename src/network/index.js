@@ -64,8 +64,8 @@ export const uploadFileFun = params => { return reqMethod('/api/product/weChat/u
 
 
 //lh  智谷汇相关接口
-export const getzghUserInfo = params => { return reqMethod('/api/ext/zgh/getUserInfo', params)};//获取用户信息
-export const getxPay = params => { return reqMethod('/api/xp/xPay', params)};//获取支付参数
-export const getPayList = params => { return reqMethod('/api/xp/getPayList', params)};//获取支付参数
-export const getClientIp = params => { return reqMethod('/getClientIp.php', params, 'GET')};//获取用户ip
+export const getzghUserInfo = params => { return reqMethod('/php/api/ext/zgh/getUserInfo', params)};//获取用户信息
+export const getxPay = params => { return reqMethod('/php/api/xp/xPay', params)};//获取支付参数
+export const getPayList = params => { return reqMethod('/php/api/xp/getPayList', params)};//获取支付参数
+export const getClientIp = params => { return reqMethod('/php/api/getClientIp.php', params, 'GET')};//获取用户ip
 
