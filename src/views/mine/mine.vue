@@ -125,9 +125,9 @@ export default {
   },
   created() {
     // let storeTh = {"userId":"","userName":"口畏喂喂","gender":0,"headImgUrl":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI5QDU194vRTw9sUjUJcRNK8GwSJPA3T9Ahn4bI6Cic5PhOdT7BKz8QsoVrzicPyYCibJnLLU8IGt5Vw/132","phoneMobile":"","openId":"oCF6KwIWArn8xEVy9dqBE_OjWy0U","unionId":"o1cjJwV0hcqHEPxjAMac6c2Apdds"}
-    let storeTh = {"userId":"355f51a76a584db181cc669c9d3b4db1","userName":"undefined","gender":1,"headImgUrl":"https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep9YJC0GnicC7Su4S9iaMRFQsXMOYL1PU71qxibpibS6GMpBMjrKWsU4U2mrGPsyPicHxtXxxzr1eWJNvg/132","phoneMobile":"13911963987","openId":"ow7iCwjEOTrEBoW2KkWxThss8nAE","unionId":"o1cjJwTERPUHzO4lywh9kIzyqt_4"}
-    // let storeTh = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(storeTh)
+    // let storeTh = {"userId":"355f51a76a584db181cc669c9d3b4db1","userName":"undefined","gender":1,"headImgUrl":"https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep9YJC0GnicC7Su4S9iaMRFQsXMOYL1PU71qxibpibS6GMpBMjrKWsU4U2mrGPsyPicHxtXxxzr1eWJNvg/132","phoneMobile":"13911963987","openId":"ow7iCwjEOTrEBoW2KkWxThss8nAE","unionId":"o1cjJwTERPUHzO4lywh9kIzyqt_4"}
+    let storeTh = JSON.parse(localStorage.getItem("userInfo"));
+    // console.log(storeTh)
     this.userId = storeTh.userId;
     this.averter = storeTh.headImgUrl;
     this.nickName = storeTh.userName;

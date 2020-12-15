@@ -113,7 +113,7 @@ export default {
       },
       recordId: "",
       rightBg: require("@/assets/img/yuekabg2@2x.png"),
-      userId: '355f51a76a584db181cc669c9d3b4db1',
+      userId: localStorage.getItem("userId"), //'355f51a76a584db181cc669c9d3b4db1',
       userInfo: JSON.parse(localStorage.getItem("userInfo")),
       // openId:"ow7iCwjEOTrEBoW2KkWxThss8nAE",
       payStatus: true,
