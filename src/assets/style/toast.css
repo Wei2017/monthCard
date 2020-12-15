@@ -1,0 +1,5 @@
+.van-toast /deep/ .van-toast__text{
+    font-size: 16px !important;
+    padding: 0 15px;
+    line-height: 30px;
+}

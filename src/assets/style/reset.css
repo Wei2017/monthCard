@@ -1,0 +1,77 @@
+﻿html,body,div,span,
+applet,object,iframe,
+h1,h2,h3,h4,h5,h6,p,blockquote,pre,
+a,abbr,acronym,address,big,cite,code,
+del,dfn,em,font,img,ins,kbd,q,s,samp,
+small,strike,strong,sub,sup,tt,var,
+dd,dl,dt,li,ol,ul,
+fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: "微软雅黑 light",'PingFang-SC-light', sans-serif !important;
+	-webkit-font-family:"Hiragino Sans GB","PingFang-SC-light",sans-serif !important;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+ol,ul {
+	list-style: none;
+}
+q:before,q:after,
+blockquote:before,blockquote:after {
+	content: "";
+}
+input:focus{ outline:none}
+a {text-decoration: none;
+	color: #3074FC;
+}
+a:hover{
+	opacity: .9;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    font-size: 0
+}
+
+.clearfix {
+    zoom: 1
+}
+
+.hidden {display: none;}
+
+
+i,b,em{
+  font-style: normal;
+}
+
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.row{
+	display: flex;
+	align-items: center;
+	font-size: 0;
+}
+.column{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 0;
+}
+
+.van-toast__text{
+	font-size: 24px;
+}
+.van-toast{
+	padding: 20px;
+}

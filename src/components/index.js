@@ -1,0 +1,1 @@
+export const footerBar = './footer.vue'
