@@ -76,12 +76,12 @@ export default {
   color: rgba(51, 51, 51, 1);
 }
 .invoice_item:first-of-type {
-  background: url("assets/images/linting@2x.png") no-repeat 48px center;
+  background: url("~assets/images/linting@2x.png") no-repeat 48px center;
   background-size: 40px 40px;
   background-color: #fff;
 }
 .invoice_item:nth-of-type(2) {
-  background: url("assets/images/yuezu@2x.png") no-repeat 48px center;
+  background: url("~assets/images/yuezu@2x.png") no-repeat 48px center;
   background-size: 40px 40px;
   background-color: #fff;
 }
