@@ -20,7 +20,6 @@ import {
   saveMonthToProductAddCar,
 } from "network/index";
 import dialogs from "components/dialog.vue";
-import { Toast } from "vant";
 import plateNumbers from "components/plateNumber";
 export default {
   data() {
@@ -52,14 +51,14 @@ export default {
   },
   created() {
     this.oldCar = this.$route.query.car;
-    if (this.$route.query.car != "" && this.$route.query.car != undefined) {
-      console.log(this.$route.query.car);
-      if (this.$route.query.car.length == 7) {
+    if (this.oldCar != "" && this.oldCar != undefined) {
+      console.log(this.oldCar);
+      if (this.oldCar.length == 7) {
         this.length = 1;
-      } else if (this.$route.query.car.length == 8) {
+      } else if (this.oldCar.length == 8) {
         this.length = 2;
       }
-      this.numArr = this.$route.query.car.split("");
+      this.numArr = this.oldCar.split("");
       this.datas = {
         type: 2,
         length: this.length,

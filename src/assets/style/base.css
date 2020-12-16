@@ -46,12 +46,30 @@ a {
 .clear-fix {
   zoom: 1;
 }
+.hidden {display: none;}
 
-.left {
-  float: left;
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.row{
+	display: flex;
+	align-items: center;
+	font-size: 0;
+}
+.column{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 0;
 }
 
-.right {
-  float: right;
+.van-toast__text{
+	font-size: 24px;
+}
+.van-toast{
+	padding: 20px;
 }
 
