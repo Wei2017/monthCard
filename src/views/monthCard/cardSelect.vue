@@ -170,7 +170,7 @@
 
     <van-action-sheet
       :round="false"
-      v-model="showSelect"
+      v-model:show="showSelect"
       :close-on-click-overlay="false"
     >
       <div class="handleBtn clearfix">
@@ -242,7 +242,7 @@ export default {
       showSelect: false, //控制选择车牌底部弹出层
       selected: require("@/assets/img/carjiantou.png"),
       option: [],
-      userId: localStorage.getItem("userId"), //"355f51a76a584db181cc669c9d3b4db1",
+      userId: "355f51a76a584db181cc669c9d3b4db1",//localStorage.getItem("userId"), //"355f51a76a584db181cc669c9d3b4db1",
       selectCarArr: [],
       showToast: false,
       obj: {
@@ -265,7 +265,15 @@ export default {
       payradio: "102",
       $appSceneType: "",
       clientip: "",
-      dataId:""
+      dataId:"",
+      fmObj: {
+        "ORDINARY_MONTH": "普通包月",
+        "TIME_SHARING_MONTH": "分时包月",
+        "FIXED_SPACE": "固定车位",
+        "NO_FIXED_SPACE": "非固定车位",
+        "ABOVE_AND_2200": "2.2L及以上排量",
+        "BELOW_OR_2200": "2.2L以下排量"
+      }
     };
   },
   components: {
@@ -297,37 +305,28 @@ export default {
     getSwiperList() {
       try {
         let { parkinglotId, parkinglotName, index } = this.$route.query,
-          swiperList = [];
+          swiperObj = {},
+          FMOBJ = this.fmObj
         getProduct({ parkinglotId }).then(res => {
-          swiperList = res.data;
-          swiperList.forEach((item, index) => {
-            item.parkingName = parkinglotName;
-            if (item.productType == "ORDINARY_MONTH") {
-              item.productType = "普通包月";
-            } else if (item.productType == "TIME_SHARING_MONTH") {
-              item.productType = "分时包月";
-            }
+          swiperObj = res.data[index]; //当前月卡产品对象
+          Object.keys(swiperObj).map(key => { //根据业态选择对应的展示内容
+            swiperObj['parkingName'] = parkinglotName;
+            Object.keys(FMOBJ).map(fKey => {
+              if(fKey == swiperObj[key]){
+                swiperObj[key] = FMOBJ[fKey]
+              }
+            })
+          })
 
-            if (item.spaceType == "FIXED_SPACE") {
-              item.spaceType = "固定车位";
-            } else if (item.spaceType == "NO_FIXED_SPACE") {
-              item.spaceType = "非固定车位";
-            }
+          this.informationId = swiperObj.informationId;
+          this.swiperList = swiperObj;
 
-            if (item.displacementType == "ABOVE_AND_2200") {
-              item.displacementType = "2.2L及以上排量";
-            } else if (item.displacementType == "BELOW_OR_2200") {
-              item.displacementType = "2.2L以下排量";
-            }
-          });
-          this.informationId = swiperList[index].informationId;
-
-          this.swiperList = swiperList[index];
           this.getBgColor();
 
           // 获取用户可添加车牌列表
           selectCard({ userId: this.userId }).then(ret => {
             let data = ret.data;
+            console.log(data)
             if (data.length > 0) {
               for (let i in data) {
                 if (data[i].displacementType == "ABOVE_AND_2200") {
@@ -336,15 +335,11 @@ export default {
                 if (data[i].displacementType == "BELOW_OR_2200") {
                   data[i].displacementType = "2.2L以下排量";
                 }
-                console.log(
-                  swiperList[index].displacementType,
-                  data[i].displacementType
-                );
                 // 获取用户已添加车牌的排量 符合月卡排量标准才可选择
                 if (
-                  swiperList[index].displacementType ==
+                  swiperObj.displacementType ==
                     data[i].displacementType ||
-                  !swiperList[index].displacementType
+                  !swiperObj.displacementType
                 ) {
                   this.option.push({ name: data[i].carLicense, className: "" });
                 } else {
@@ -368,20 +363,30 @@ export default {
     // 获取月卡信息
     getMonthCardInfo(informationId) {
       chooseCard({ informationId }).then(ret => {
-        let selectedInfo = ret.data[0];
+        let selectedInfo = ret.data[0],
+            FMOBJ = this.fmObj
 
         this.spaceNum = selectedInfo.spaceNumber;
         this.carNum = parseInt(selectedInfo.carNumber); //车牌数
-        if (selectedInfo.displacementType == "BELOW_OR_2200") {
-          this.displacement = "2.2L以下排量";
-        } else if (selectedInfo.displacementType == "ABOVE_AND_2200") {
-          this.displacement = "2.2L及以上排量";
-        }
-        if (selectedInfo.spaceType == "FIXED_SPACE") {
-          selectedInfo.spaceType = "固定车位";
-        } else if (selectedInfo.spaceType == "NO_FIXED_SPACE") {
-          selectedInfo.spaceType = "非固定车位";
-        }
+        
+        Object.keys(FMOBJ).map(key => {
+          if(selectedInfo.displacementType == key) {
+            this.displacement = FMOBJ[key]
+          }
+          if (selectedInfo.spaceType == key) {
+            selectedInfo.spaceType = FMOBJ[key]
+          }
+        })
+        // if (selectedInfo.displacementType == "BELOW_OR_2200") {
+        //   this.displacement = "2.2L以下排量";
+        // } else if (selectedInfo.displacementType == "ABOVE_AND_2200") {
+        //   this.displacement = "2.2L及以上排量";
+        // }
+        // if (selectedInfo.spaceType == "FIXED_SPACE") {
+        //   selectedInfo.spaceType = "固定车位";
+        // } else if (selectedInfo.spaceType == "NO_FIXED_SPACE") {
+        //   selectedInfo.spaceType = "非固定车位";
+        // }
         // 初始化选中项 默认第一个
         this.selectedInfo = selectedInfo;
         this.parkLotList = ret.data;
