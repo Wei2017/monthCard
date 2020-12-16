@@ -404,7 +404,7 @@ export default {
       } else if (this.obj.flag == 19) {
         let userPhone = this.userPhone;
         console.log(userPhone);
-        if (!this.common.checkPhone(userPhone)) {
+        if (!this.$util.checkPhone(userPhone)) {
           this.$toast("手机号输入错误");
           return;
         }
@@ -596,7 +596,7 @@ export default {
       }
 
       day = day.toString().padStart(2, 0);
-      let retureValue = that.common.formatDate(
+      let retureValue = that.$util.formatDate(
         date,
         "yyyy" + format + "MM" + format + day
       );
