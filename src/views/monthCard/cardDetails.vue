@@ -86,6 +86,7 @@ import {
 } from "network/index";
 import dialogs from "components/dialog.vue";
 import { Icon, Loading } from "vant";
+import { defineFormat } from '@/config/options'
 export default {
   data() {
     return {
@@ -142,18 +143,28 @@ export default {
       // recordId 月卡id
       myOldProductDetails({ recordId }).then((ret) => {
         let cardDetails = ret.data.myOldProductDetailsList[0];
-        // 判断后台返回车位类别
-        if (cardDetails.spaceType == "FIXED_SPACE") {
-          cardDetails.spaceType = "固定车位";
-        } else if (cardDetails.spaceType == "NO_FIXED_SPACE") {
-          cardDetails.spaceType = "非固定车位";
-        }
 
-        if (cardDetails.productType == "ORDINARY_MONTH") {
-          cardDetails.productType = "普通包月";
-        } else if (cardDetails.productType == "TIME_SHARING_MONTH") {
-          cardDetails.productType = "分时包月";
-        }
+        Object.keys(defineFormat).map(key => {
+          // 判断后台返回车位类别
+          if (cardDetails.spaceType == key) {
+            cardDetails.spaceType = defineFormat[key];
+          }
+          if (cardDetails.productType == key) {
+            cardDetails.productType = defineFormat[key];
+          }
+        })
+        // 判断后台返回车位类别
+        // if (cardDetails.spaceType == "FIXED_SPACE") {
+        //   cardDetails.spaceType = "固定车位";
+        // } else if (cardDetails.spaceType == "NO_FIXED_SPACE") {
+        //   cardDetails.spaceType = "非固定车位";
+        // }
+
+        // if (cardDetails.productType == "ORDINARY_MONTH") {
+        //   cardDetails.productType = "普通包月";
+        // } else if (cardDetails.productType == "TIME_SHARING_MONTH") {
+        //   cardDetails.productType = "分时包月";
+        // }
         cardDetails.effectiveEndDateAddOne = cardDetails.effectiveEndDateAddOne.split(
           " "
         )[0];
