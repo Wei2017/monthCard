@@ -216,6 +216,8 @@ import { Icon, ActionSheet, Toast } from "vant";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import dialogs from "components/dialog.vue";
 
+import { defineFormat } from '@/config/options'
+
 export default {
   data() {
     return {
@@ -265,15 +267,7 @@ export default {
       payradio: "102",
       $appSceneType: "",
       clientip: "",
-      dataId:"",
-      fmObj: {
-        "ORDINARY_MONTH": "普通包月",
-        "TIME_SHARING_MONTH": "分时包月",
-        "FIXED_SPACE": "固定车位",
-        "NO_FIXED_SPACE": "非固定车位",
-        "ABOVE_AND_2200": "2.2L及以上排量",
-        "BELOW_OR_2200": "2.2L以下排量"
-      }
+      dataId:""
     };
   },
   components: {
@@ -305,15 +299,14 @@ export default {
     getSwiperList() {
       try {
         let { parkinglotId, parkinglotName, index } = this.$route.query,
-          swiperObj = {},
-          FMOBJ = this.fmObj
+          swiperObj = {};
         getProduct({ parkinglotId }).then(res => {
           swiperObj = res.data[index]; //当前月卡产品对象
           Object.keys(swiperObj).map(key => { //根据业态选择对应的展示内容
             swiperObj['parkingName'] = parkinglotName;
-            Object.keys(FMOBJ).map(fKey => {
+            Object.keys(defineFormat).map(fKey => {
               if(fKey == swiperObj[key]){
-                swiperObj[key] = FMOBJ[fKey]
+                swiperObj[key] = defineFormat[fKey]
               }
             })
           })
@@ -363,18 +356,17 @@ export default {
     // 获取月卡信息
     getMonthCardInfo(informationId) {
       chooseCard({ informationId }).then(ret => {
-        let selectedInfo = ret.data[0],
-            FMOBJ = this.fmObj
+        let selectedInfo = ret.data[0]
 
         this.spaceNum = selectedInfo.spaceNumber;
         this.carNum = parseInt(selectedInfo.carNumber); //车牌数
         
-        Object.keys(FMOBJ).map(key => {
+        Object.keys(defineFormat).map(key => {
           if(selectedInfo.displacementType == key) {
-            this.displacement = FMOBJ[key]
+            this.displacement = defineFormat[key]
           }
           if (selectedInfo.spaceType == key) {
-            selectedInfo.spaceType = FMOBJ[key]
+            selectedInfo.spaceType = defineFormat[key]
           }
         })
         // if (selectedInfo.displacementType == "BELOW_OR_2200") {

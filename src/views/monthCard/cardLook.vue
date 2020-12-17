@@ -117,7 +117,7 @@
       </van-action-sheet>-->
       <van-action-sheet
         :round="false"
-        v-model="showSelect"
+        v-model:show="showSelect"
         cancel-text="取消"
         close-on-click-action
       >
@@ -161,6 +161,9 @@ import {
   getxPay
 } from "network/index";
 import { Icon, ActionSheet, Loading } from "vant";
+
+import { defineFormat } from '@/config/options'
+
 // import { delete } from 'vue/types/umd';
 export default {
   data() {
@@ -185,7 +188,7 @@ export default {
         type: 1, //控制按钮, 1 单按钮 2 双按钮
         flag: 15 //控制弹窗显示内容
       },
-      userId: localStorage.getItem("userId"), //"355f51a76a584db181cc669c9d3b4db1",
+      userId: "355f51a76a584db181cc669c9d3b4db1",//localStorage.getItem("userId"), //"355f51a76a584db181cc669c9d3b4db1",
       userInfo: JSON.parse(localStorage.getItem("userInfo")),
       // openId:'ow7iCwjEOTrEBoW2KkWxThss8nAE',
 
@@ -226,7 +229,7 @@ export default {
     this.headerStyle.background = bgColor;
     this.headerStyle.boxShadow = bgShadow;
     // if(this.$util.userAuthorStatus()){
-    this.init();
+        this.init();
     // }
     console.log(this.$route.query);
   },
@@ -238,8 +241,8 @@ export default {
        * 智谷汇App
        */
     },
-    getCardDetails() {
-      myNewProductDetails({ recordId: this.recordId })
+    async getCardDetails() {
+     await myNewProductDetails({ recordId: this.recordId })
         .then(ret => {
           try {
             let detailInfo = ret.data.myNewProductDetailsList[0];
@@ -252,23 +255,31 @@ export default {
             // for(let j in this.vehPaiList ){
             //   this.statusArr.push(true)
             // }
-            if (detailInfo.productType == "ORDINARY_MONTH") {
-              detailInfo.productType = "普通包月";
-            } else if (detailInfo.productType == "TIME_SHARING_MONTH") {
-              detailInfo.productType = "分时包月";
-            }
+            console.log(detailInfo)
+            Object.keys(detailInfo).map(key => { //根据业态选择对应的展示内容
+              Object.keys(defineFormat).map(fKey => {
+                if(fKey == detailInfo[key]){
+                  detailInfo[key] = defineFormat[fKey]
+                }
+              })
+            })
+            // if (detailInfo.productType == "ORDINARY_MONTH") {
+            //   detailInfo.productType = "普通包月";
+            // } else if (detailInfo.productType == "TIME_SHARING_MONTH") {
+            //   detailInfo.productType = "分时包月";
+            // }
 
-            if (detailInfo.spaceType == "FIXED_SPACE") {
-              detailInfo.spaceType = "固定车位";
-            } else if (detailInfo.spaceType == "NO_FIXED_SPACE") {
-              detailInfo.spaceType = "非固定车位";
-            }
+            // if (detailInfo.spaceType == "FIXED_SPACE") {
+            //   detailInfo.spaceType = "固定车位";
+            // } else if (detailInfo.spaceType == "NO_FIXED_SPACE") {
+            //   detailInfo.spaceType = "非固定车位";
+            // }
 
-            if (detailInfo.displacementType == "ABOVE_AND_2200") {
-              detailInfo.displacementType = "2.2L及以上排量";
-            } else if (detailInfo.displacementType == "BELOW_OR_2200") {
-              detailInfo.displacementType = "2.2L以下排量";
-            }
+            // if (detailInfo.displacementType == "ABOVE_AND_2200") {
+            //   detailInfo.displacementType = "2.2L及以上排量";
+            // } else if (detailInfo.displacementType == "BELOW_OR_2200") {
+            //   detailInfo.displacementType = "2.2L以下排量";
+            // }
             // 有效期 开始日期
             detailInfo.effectiveStartDate = detailInfo.effectiveStartDate.split(
               " "
@@ -539,6 +550,9 @@ export default {
     },
     // 显示底部选择车牌弹框并渲染高亮
     showSelectFun() {
+      console.log(this.option)
+
+      console.log(this.option.length)
       if (this.option.length == 0) {
         //添加车牌
         this.show = true;

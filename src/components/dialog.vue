@@ -596,7 +596,7 @@ export default {
       }
 
       day = day.toString().padStart(2, 0);
-      let retureValue = that.common.formatDate(
+      let retureValue = that.$util.formatDate(
         date,
         "yyyy" + format + "MM" + format + day
       );
