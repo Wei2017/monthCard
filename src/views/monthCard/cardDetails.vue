@@ -138,7 +138,7 @@ export default {
     },
     getOldCardInfo() {
       console.log(this.$route.query);
-      let { recordId } = this.$route.query;
+      let { recordId, bgColor, bgShadow } = this.$route.query;
       this.recordId = recordId;
       // recordId 月卡id
       myOldProductDetails({ recordId }).then((ret) => {
@@ -168,9 +168,9 @@ export default {
         cardDetails.effectiveEndDateAddOne = cardDetails.effectiveEndDateAddOne.split(
           " "
         )[0];
-        let { bgColor, bgShadow } = this.$route.query,
-          carStyle = { bgColor, bgShadow };
-        cardDetails.style = carStyle; //卡片样式
+        // let { bgColor, bgShadow } = this.$route.query,
+        //   carStyle = { bgColor, bgShadow };
+        cardDetails.style = { bgColor, bgShadow }; //卡片样式
         this.vehPaiList = ret.data.carLicense;
         this.cardDetails = cardDetails;
         this.pageLoad = true;
@@ -193,6 +193,7 @@ export default {
       if (flag == 13) {
         this.obj.btn = "确认解绑";
       }
+      console.log(this.obj)
       this.show = true;
     },
     // 弹框操作

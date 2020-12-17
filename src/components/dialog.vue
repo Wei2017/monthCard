@@ -404,7 +404,7 @@ export default {
       } else if (this.obj.flag == 19) {
         let userPhone = this.userPhone;
         console.log(userPhone);
-        if (!this.common.checkPhone(userPhone)) {
+        if (!this.$util.checkPhone(userPhone)) {
           this.$toast("手机号输入错误");
           return;
         }
