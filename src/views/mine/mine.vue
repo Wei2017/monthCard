@@ -15,7 +15,7 @@
       <div
         class="carNum"
         :style="{ backgroundImage: 'url(' + carbg + ')' }"
-        @click="toMyCard"
+        @click="clickJump('/myMonthCard')"
       >
         <p>我的月卡</p>
         <p>您目前有{{ myCardList.length }}张月卡</p>
@@ -25,7 +25,7 @@
         </span>
       </div>
       <ul class="menu_list">
-        <li @click="toMyCar">
+        <li @click="clickJump('/myCar')">
           <img :src="renzImg" />
           <div
             :style="{ backgroundImage: 'url(' + rightImg + ')' }"
@@ -47,7 +47,7 @@
                         <span style="color:#FF5765" v-if="failed != 0">{{failed}}辆认证未通过</span>
                     </div>       -->
         </li>
-        <li @click="toBuyCar">
+        <li @click="clickJump('/cardIndex')">
           <img :src="bugImg" />
           <div
             class="bgRight"
@@ -106,6 +106,7 @@ export default {
       carArrow: require("assets/img/jiantou.png"),
       activeIndex: 1,
       userId: "",
+      params: {},
       carList: [],
       adopt: "",
       failed: "",
@@ -129,6 +130,7 @@ export default {
     // let storeTh = JSON.parse(localStorage.getItem("userInfo"));
     console.log(storeTh)
     this.userId = storeTh.userId;
+    this.params['userId'] = storeTh.userId
     this.averter = storeTh.headImgUrl;
     this.nickName = storeTh.userName;
     this.phone = storeTh.phoneMobile;
@@ -139,15 +141,13 @@ export default {
 
   methods: {
     getMyCardList() {
-      let params = {
-        userId: this.userId,
-      };
-      API.getMyCards(params).then((ret) => {
+      API.getMyCards(this.params).then((ret) => {
         console.log(ret)
         this.myCardList = ret.data;
       });
     },
     goMyinvoice() {
+
       if (this.carList.length == 0) {
         this.obj = {
           btn: "绑定爱车", //单个按钮名称
@@ -162,25 +162,22 @@ export default {
       }
     },
     getCarInfo() {
-      let data = {
-        userId: this.userId,
-      };
-      API.getMineCar(data).then((res) => {
+      // let data = {
+      //   userId: this.userId,
+      // };
+      API.getMineCar(this.params).then((res) => {
         console.log(res);
         this.carList = res.data;
       });
     },
     getCertyInfo() {
-      let data = {
-        userId: this.userId,
-      };
-      API.getCerTify(data).then((res) => {
+      // let data = {
+      //   userId: this.userId,
+      // };
+      API.getCerTify(this.params).then((res) => {
         this.adopt = res.data.adopt;
         this.failed = res.data.failed;
       });
-    },
-    toMyCard() {
-      this.$router.push({ path: "/myMonthCard" });
     },
     cerTify() {
       this.obj = {
@@ -207,12 +204,18 @@ export default {
       this.showToast = false;
       this.$router.push({ path: "/bindPlate" });
     },
-    toMyCar() {
-      this.$router.push({ path: "/myCar" });
+    clickJump(path) {
+      this.$router.push({ path });
     },
-    toBuyCar() {
-      this.$router.push({ path: "/cardIndex" });
-    },
+    // toMyCard() {
+    //   this.$router.push({ path: "/myMonthCard" });
+    // },
+    // toMyCar() {
+    //   this.$router.push({ path: "/myCar" });
+    // },
+    // toBuyCar() {
+    //   this.$router.push({ path: "/cardIndex" });
+    // },
   },
 };
 </script>

@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <!-- <van-action-sheet :round="false" v-model="showSelect" :close-on-click-overlay="false">
+      <!-- <van-action-sheet :round="false" v-model:show="showSelect" :close-on-click-overlay="false">
       <div class="handleBtn clearfix">
         <span class="fl" @click="showSelect = false">取消</span>
         <span class="fr" @click="selectCarNumber">确认</span>

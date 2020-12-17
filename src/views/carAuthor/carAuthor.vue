@@ -113,7 +113,7 @@
         </li>
       </ul>
     </div>
-    <van-action-sheet :round="false" v-model="showSelect" cancel-text="取消" close-on-click-action>
+    <van-action-sheet :round="false" v-model:show="showSelect" cancel-text="取消" close-on-click-action>
       <ul class="selectList">
         <li
           v-for="(item,index) in option"
