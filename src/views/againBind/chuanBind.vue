@@ -30,7 +30,7 @@
           <!-- <input type="text" placeholder="请输入您的车牌号" class="phone_input" v-model="barndNum" /> -->
           <plateNumbers
             @getPlateLicense="getPlateLicense"
-            :istrue="num"
+            ref="plateNum"
             :datas="datas"
             :flag="flag"
           ></plateNumbers>
@@ -76,7 +76,7 @@ export default {
       status: 1,
       show: false,
       obj: {},
-      hearImg:require("../../assets/img/bzbg@2x.png"),
+      hearImg:require("assets/img/bzbg@2x.png"),
       // flag 5 不是老用户 flag 7 您没有该号牌管理权限！ flag 14 查询到的月卡列表
       userId:localStorage.getItem("userId")
     };
@@ -93,16 +93,16 @@ export default {
 
   methods: {
     goMy() {
-      this.$router.push({ path: "cardIndex" });
+      this.$router.push({ path: "/cardIndex" });
     },
     getPlateLicense(data) {
       console.log("组件传出的data", data);
       let _this = this;
-      this.barndNum = data;
+      _this.barndNum = data;
       let params = {
-        carLicense: this.barndNum,
-        phone: this.phoneNum,
-        userId: this.userId,
+        carLicense: _this.barndNum,
+        phone: _this.phoneNum,
+        userId: _this.userId,
         // userId: '355f51a76a584db181cc669c9d3b4db1',
       };
       retCard(params).then((res) => {
@@ -167,26 +167,29 @@ export default {
         this.$toast("手机号输入错误");
         return;
       }
-      this.num++;
+
+      console.log(this.$refs.plateNum)
+      this.$refs.plateNum.submitFn()
+      // this.num++;
     },
     closeTc() {
       this.show = false;
     },
     affirms(e) {
+      let _this = this;
       console.log(e);
-      if (this.type == 1) {
-        let _this = this;
+      if (_this.type == 1) {
         let params = {
-          userId: this.userId,
+          userId: _this.userId,
           // userId: 'd319d6f111bd4bf98646c9e7cdfa08fb',
-          carLicense: this.barndNum,
-          phone: this.phoneNum,
+          carLicense: _this.barndNum,
+          phone: _this.phoneNum,
         };
         getMyMonthCard(params).then((res) => {
           console.log(res);
           if(res.status == 200){
              _this.show = false;
-            _this.$router.push({ path: "myMonthCard" });
+            _this.$router.push({ path: "/myMonthCard" });
           }else{
             // _this.show = false;
             _this.$toast(res.message)
@@ -194,7 +197,7 @@ export default {
          
         });
       } else if (this.type == 3) {
-        this.$router.push({ path: "bindPlate" });
+        this.$router.push({ path: "/bindPlate" });
       } else {
         this.show = false;
       }

@@ -2,12 +2,23 @@
   <div>
     <img class="bindPlate_img" src="~assets/images/car_bg@2x.png" alt srcset />
     <p class="bindPlate_tit">绑定车牌</p>
-    <plateNumbers @getPlateLicense="getPlateLicense" :istrue="num" :datas="datas" :flag="flag"></plateNumbers>
+    <plateNumbers
+      @getPlateLicense="getPlateLicense"
+      ref="plateNum"
+      :datas="datas"
+      :flag="flag"
+    ></plateNumbers>
     <div class="submit-box">
       <button @click="submitFn">确认</button>
     </div>
 
-    <dialogs :show="show" :obj="obj" @closepop="closeTc" @affirmBtn="affirms" v-if="show" />
+    <dialogs
+      :show="show"
+      :obj="obj"
+      @closepop="closeTc"
+      @affirmBtn="affirms"
+      v-if="show"
+    />
   </div>
 </template>
 
@@ -41,7 +52,7 @@ export default {
         type: 1, //控制按钮, 1 单按钮 2 双按钮
         flag: -1, //控制弹窗显示内容
       },
-      userId: localStorage.getItem("userId"), //'355f51a76a584db181cc669c9d3b4db1',
+      userId: "355f51a76a584db181cc669c9d3b4db1", //localStorage.getItem("userId"), //'355f51a76a584db181cc669c9d3b4db1',
       licensePlate: "", //用户输入的车牌号
     };
   },
@@ -49,39 +60,44 @@ export default {
     plateNumbers,
     dialogs,
   },
-  created() {
-    this.oldCar = this.$route.query.car;
-    if (this.oldCar != "" && this.oldCar != undefined) {
-      console.log(this.oldCar);
-      if (this.oldCar.length == 7) {
-        this.length = 1;
-      } else if (this.oldCar.length == 8) {
-        this.length = 2;
+  created() {},
+  mounted() {},
+  activated() {
+    this.$nextTick(() => {
+      this.oldCar = this.$route.query.car;
+      console.log(this.oldCar,'上一页面传过来的车牌号');
+      if (this.oldCar != "" && this.oldCar != undefined) {
+        if (this.oldCar.length == 7) {
+          this.length = 1;
+        } else if (this.oldCar.length == 8) {
+          this.length = 2;
+        }
+        this.numArr = this.oldCar.split("");
+        this.datas = {
+          type: 2,
+          length: this.length,
+          numArr: this.numArr,
+        };
       }
-      this.numArr = this.oldCar.split("");
-      this.datas = {
-        type: 2,
-        length: this.length,
-        numArr: this.numArr,
-      };
-    }
+    });
   },
 
-  mounted() {},
   methods: {
     submitFn() {
-      this.num++;
+      // 调用子组件中的submitFn方法
+      this.$refs.plateNum.submitFn();
+      // this.num++;
     },
     getPlateLicense(data) {
       console.log("组件传出的data", data);
 
       let _this = this,
         licensePlate = data, //车牌
-        dialogObj = this.obj; //弹框组件对象
+        dialogObj = _this.obj; //弹框组件对象
 
-      this.licensePlate = data;
+      _this.licensePlate = data;
 
-      this.$toast.loading({
+      _this.$toast.loading({
         type: "loading",
         message: "正在查询您的车辆历史数据",
         duration: 0, //一直loading 数据加载完成后 通过 this.$toast.clear(); 隐藏loading
@@ -91,12 +107,12 @@ export default {
       // phone: this.phoneNum,
       let selectParams = {
         carLicense: licensePlate,
-        userId: this.userId,
+        userId: _this.userId,
         // userId: '355f51a76a584db181cc669c9d3b4db1',
       };
 
       // 绑定车牌
-      if (this.datas.type == 1) {
+      if (_this.datas.type == 1) {
         // 绑定之前查询月卡
         queryOldMonthCardsToShow(selectParams).then((ret) => {
           // 接口请求成功
@@ -104,14 +120,14 @@ export default {
             // 有返回月卡列表
             if (ret.data) {
               // 隐藏加载loading
-              this.$toast.clear();
+              _this.$toast.clear();
 
               // 显示月卡列表弹框
               dialogObj.cardList = ret.data; //月卡列表
               dialogObj.flag = 19;
               dialogObj.type = 1;
               dialogObj.btn = "立即领取";
-              this.show = true;
+              _this.show = true;
             } else {
               // 走绑定车牌接口
               bindMyCars(selectParams)
@@ -122,8 +138,8 @@ export default {
                     dialogObj.flag = 2;
                     dialogObj.type = 2; //显示双按钮
                     // 页面数据加载完成后 隐藏loading
-                    this.$toast.clear();
-                    this.show = true;
+                    _this.$toast.clear();
+                    _this.show = true;
                   } else {
                     _this.$toast(res.message);
                   }
@@ -163,7 +179,7 @@ export default {
       let _this = this,
         dialogObj = _this.obj;
       this.show = false;
-      if(dialogObj.flag == 2){
+      if (dialogObj.flag == 2) {
         _this.$router.push({ path: "/myCar" });
       }
     },
@@ -188,7 +204,6 @@ export default {
           carLicense: _this.licensePlate, //车牌号
           phone: e.userPhone,
         };
-        
 
         console.log(param);
 

@@ -34,8 +34,7 @@
         <div class="mycar_fex" v-show="item.flag">
           <p
             class="mycar_fex_btn"
-            @click="change"
-            :data-item="item.carLicense"
+            @click.stop="change(item.carLicense)"
             v-if="
               item.vehicleLicenseStatus != 'SUCCESSFUL_REVIEW' &&
                 item.vehicleLicenseStatus != 'UNDER_REVIEW'
@@ -43,7 +42,7 @@
           >
             更正
           </p>
-          <p class="mycar_fex_btn" @click="remove" :data-item="item.carLicense">
+          <p class="mycar_fex_btn" @click.stop="remove(item.carLicense)">
             解绑
           </p>
         </div>
@@ -82,7 +81,8 @@ export default {
       num: 1,
       flag: false,
       carList: [],
-      carLicense: ""
+      carLicense: "",
+      userId: '355f51a76a584db181cc669c9d3b4db1',//localStorage.getItem("userId")
     };
   },
   components: {
@@ -97,7 +97,7 @@ export default {
     getData() {
       let _this = this;
       let param = {
-        userId: localStorage.getItem("userId")
+        userId: _this.userId
       };
       getMineCar(param).then(res => {
         console.log(res);
@@ -113,7 +113,7 @@ export default {
       });
     },
     goList(){
-      this.$router.push({ name: "carAuthor" });
+      this.$router.push({ name: "/carAuthor" });
     },
     closeTc() {
       this.shows = false;
@@ -123,7 +123,7 @@ export default {
       let _this = this;
       this.shows = false;
       let param = {
-        userId: localStorage.getItem("userId"),
+        userId: _this.userId,
         carLicense: this.carLicense
       };
       removeMyCars(param).then(res => {
@@ -137,7 +137,7 @@ export default {
       });
     },
     goBind() {
-      this.$router.push({ name: "bindPlate" });
+      this.$router.push({ path: "/bindPlate" });
     },
     show(e) {
       this.carList[Number(e.target.dataset.ind)].flag = true;
@@ -148,21 +148,17 @@ export default {
         this.carList[i].flag = false;
       }
     },
-    change(e) {
-      console.log(e.target.dataset.item);
-      e.stopPropagation();
+    change(car) {
       this.$router.push({
-        name: "bindPlate",
-        query: { car: e.target.dataset.item }
+        path: "/bindPlate",
+        query: { car }
       });
     },
-    remove(e) {
-      console.log(e.target.dataset.item);
-      e.stopPropagation();
+    remove(car) {
       this.shows = true;
-      this.carLicense = e.target.dataset.item;
+      this.carLicense = car;
       this.obj = {
-        car: e.target.dataset.item,
+        car,
         btn: "我知道了", //单个按钮名称
         btn1: "取消", //双按钮第一个
         btn2: "继续", //双按钮第二个

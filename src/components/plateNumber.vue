@@ -53,7 +53,6 @@
           <p>新能源</p>
         </div>
       </div>
-
     </div>
     <div class="first-word-wrap" v-if="firstWrapStatus">
       <div class="first-word" @click="selectFirstWord($event)">
@@ -153,8 +152,8 @@
         </div>
       </div>
       <div class="first-word">
-        <div class="word word1" @click="firstWrapStatus=false">
-            <span>完成</span>
+        <div class="word word1" @click="firstWrapStatus = false">
+          <span>完成</span>
         </div>
         <div class="word" @click="selectFirstWord($event)">
           <span>新</span>
@@ -174,8 +173,8 @@
         <div class="word" @click="selectFirstWord($event)">
           <span>澳</span>
         </div>
-        <div class="word word1" @click="firstWrapStatus=false">
-            <img src="~assets/images/delete@2x.png" alt="" srcset="">
+        <div class="word word1" @click="firstWrapStatus = false">
+          <img src="~assets/images/delete@2x.png" alt="" srcset="" />
         </div>
       </div>
     </div>
@@ -191,7 +190,7 @@
           >{{ item }}</span
         >
       </div>
-      <div class="keyboard" >
+      <div class="keyboard">
         <span
           v-for="(item, index) in allKeyWord._2"
           :key="index"
@@ -208,7 +207,7 @@
         >
       </div>
       <div class="keyboard">
-          <span class="back" @click="keyBoardStatus = false">返回</span>
+        <span class="back" @click="keyBoardStatus = false">返回</span>
         <span
           v-for="(item, index) in allKeyWord._4"
           :key="index"
@@ -223,11 +222,7 @@
   </div>
 </template>
 <script>
-import { Toast } from 'vant';
 export default {
-    components:{
-        Toast:Toast
-    },
   data() {
     return {
       formData: {
@@ -239,13 +234,13 @@ export default {
         num4: "",
         num5: "",
         num6: "",
-        num7: ""
+        num7: "",
       },
       allKeyWord: {
-        _1: [1, 2, 3, 4, 5, 6, 7,8, 9, 0],
-        _2: ['Q','W','E','R','T','Y','U','I','O','P'],
-        _3: ['A','S','D','F','G','H','J','K','L'],
-        _4: ['Z','X','C','V','B','N','M'],
+        _1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+        _2: ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+        _3: ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+        _4: ["Z", "X", "C", "V", "B", "N", "M"],
       },
       activeKeyWordIndex: 1, // 当前车牌号
       keyBoardStatus: false,
@@ -253,46 +248,19 @@ export default {
       confirmTitle: "",
       submitConfirm: false,
       submitConfirmFalse: false,
-      submitConfirmText: ""
+      submitConfirmText: "",
     };
   },
-  props:{
-      istrue: {
-        type: Number
-      },
-      datas:{
-        type:Object
-      },
-      flag:{
-        type:Boolean
-      }
+  props: {
+    datas: {
+      type: Object,
+    },
+    flag: {
+      type: Boolean,
+    },
   },
-  created() {
-    console.log(this.datas)
-    console.log(this.flag)
-    if(this.datas.type == 2){
-      this.formData = {
-          commonCard: this.datas.length,
-          num0: this.datas.numArr[0],
-          num1: this.datas.numArr[1],
-          num2: this.datas.numArr[2],
-          num3: this.datas.numArr[3],
-          num4: this.datas.numArr[4],
-          num5: this.datas.numArr[5],
-          num6: this.datas.numArr[6],
-          
-      }
-      if(this.datas.length = 1){
-        this.formData.num7 = '';
-      }else{
-        this.formData.num7 = this.datas.numArr[7];
-      }
-    }
-    
-  },
-  mounted() {
-    
-  },
+  created() {},
+  mounted() {},
   methods: {
     clickFirstWrap() {
       // 点击第一个输入框
@@ -318,7 +286,7 @@ export default {
     clickKeyBoard(item) {
       // 点击自定义键盘
       console.log(item);
-      this.formData["num" + this.activeKeyWordIndex] = item;
+      this.formData[`num${this.activeKeyWordIndex}`] = item;
       if (this.formData.commonCard === "1") {
         this.activeKeyWordIndex++;
         if (this.activeKeyWordIndex > 6) {
@@ -333,22 +301,22 @@ export default {
     },
     deleteWord() {
       // 退格
-      console.log(this.activeKeyWordIndex)
+      console.log(this.activeKeyWordIndex);
       // console.log(this.formData['num' + (this.activeKeyWordIndex - 1)])
       if (this.activeKeyWordIndex > 1) {
-        this.formData["num" + (this.activeKeyWordIndex - 1)] = "";
+        this.formData[`num${this.activeKeyWordIndex - 1}`] = "";
         this.activeKeyWordIndex--;
-      }else if(this.activeKeyWordIndex==1){
-          this.formData["num0"] = "";
-          this.activeKeyWordIndex=0;
-          this.firstWrapStatus = true;
-          this.keyBoardStatus = false;
+      } else if (this.activeKeyWordIndex == 1) {
+        this.formData["num0"] = "";
+        this.activeKeyWordIndex = 0;
+        this.firstWrapStatus = true;
+        this.keyBoardStatus = false;
       }
     },
     clickKeyWordWrap(activeKeyWordIndex) {
       this.keyBoardStatus = true;
       this.activeKeyWordIndex = activeKeyWordIndex;
-      this.formData["num" + this.activeKeyWordIndex] = "";
+      this.formData[`num${this.activeKeyWordIndex}`] = "";
     },
     submitFn() {
       let plateLicense;
@@ -356,7 +324,7 @@ export default {
         plateLicense = this.plate_license_1;
         plateLicense = this.palindrome(plateLicense);
         if (plateLicense.length < 7) {
-          Toast("请输入正确的车牌号");
+          this.$toast("请输入正确的车牌号");
           return;
         }
       }
@@ -364,7 +332,7 @@ export default {
         plateLicense = this.plate_license_2;
         plateLicense = this.palindrome(plateLicense);
         if (plateLicense.length < 8) {
-          Toast("请输入正确的车牌号");
+          this.$toast("请输入正确的车牌号");
           return;
         }
       }
@@ -374,7 +342,7 @@ export default {
     },
     palindrome(str) {
       var arr = str.split("");
-      arr = arr.filter(function(val) {
+      arr = arr.filter(function (val) {
         return (
           val !== " " &&
           val !== "," &&
@@ -398,7 +366,7 @@ export default {
     checkIsHasSpecialStr(str) {
       var flag = false;
       var arr = str.split("");
-      arr.forEach(val => {
+      arr.forEach((val) => {
         if (
           val === "!" ||
           val === "}" ||
@@ -438,18 +406,24 @@ export default {
     },
     changeCarNum() {
       this.formData.commonCard = 2;
-    }
+    },
   },
-  watch:{
-      istrue:function(val){
-          this.submitFn()
-      },
-      datas:function(val){
-        console.log(val)
-      },
-      flag:function(val){
+  watch: {
+    datas: function (datas) {
+      if (datas.type == 2) {
+        this.formData["commonCard"] = datas.length;
+        datas.numArr.forEach((item, index) => {
+          this.formData[`num${index}`] = item;
+        });
 
+        if (datas.length == 1) {
+          this.formData.num7 = "";
+        } else {
+          this.formData.num7 = datas.numArr[7];
+        }
       }
+    },
+    flag: function (val) {},
   },
   computed: {
     plate_license_1() {
@@ -474,8 +448,8 @@ export default {
         this.formData.num6 +
         this.formData.num7
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -534,7 +508,7 @@ export default {
       span {
         display: inline-block;
         line-height: 88px;
-        font-size: 36px ;
+        font-size: 36px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
       }
@@ -578,31 +552,31 @@ export default {
       margin: 0 0 20px;
       box-shadow: 0px 2px 0px 0px rgba(169, 169, 169, 1);
       background: #fff;
-      span{
-          width: 100%;
-          height: 100%;
-          display: inline-block;
-          font-size:28px ;
+      span {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        font-size: 28px;
       }
       &:active {
-          background:rgba(0,140,255,1);
-          color: #fff;
+        background: rgba(0, 140, 255, 1);
+        color: #fff;
       }
     }
-    .word1{
-        width:140px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img{
-            width: 52px;
-            height: 36px;
-        }
+    .word1 {
+      width: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 52px;
+        height: 36px;
+      }
     }
   }
 }
 .keyboard-wrap {
-  background-color: rgba(215,216,220,1);
+  background-color: rgba(215, 216, 220, 1);
   position: fixed;
   bottom: 0;
   left: 0;
@@ -621,29 +595,28 @@ export default {
       height: 86px;
       margin: 0 0 20px;
       font-size: 28px;
-      background:rgba(255,255,255,1);
-        box-shadow:0px 2px 0px 0px rgba(169,169,169,1);
-        border-radius:10px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 2px 0px 0px rgba(169, 169, 169, 1);
+      border-radius: 10px;
       &:active {
-        background:rgba(0,140,255,1);
+        background: rgba(0, 140, 255, 1);
         color: #fff;
       }
     }
-    .back{
-        width: 102px;
+    .back {
+      width: 102px;
     }
-    .delete{
-        width: 104px;
-        img{
-            width: 52px;
-            height: 36px;
-        }
+    .delete {
+      width: 104px;
+      img {
+        width: 52px;
+        height: 36px;
+      }
     }
   }
-  .keyboard1{
-      padding: 0 36px;
-      box-sizing: border-box;
+  .keyboard1 {
+    padding: 0 36px;
+    box-sizing: border-box;
   }
 }
-
 </style>
