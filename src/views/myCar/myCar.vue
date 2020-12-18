@@ -48,9 +48,9 @@
         </div>
       </li>
     </ul>
-    <router-link :to="{path:'/bindPlate'}" class="bind_new_carpai">
+    <div class="bind_new_carpai" @click.stop="change()">
       <img src="~assets/img/chepai.png" class="add_carpai_icon" alt="">
-    </router-link>
+    </div>
     <dialogs
       :show="shows"
       :obj="obj"
@@ -88,11 +88,12 @@ export default {
   components: {
     dialogs
   },
-  created() {
-    this.getData();
-  },
+  created() {},
 
   mounted() {},
+  activated() {
+    this.getData();
+  },
   methods: {
     getData() {
       let _this = this;
@@ -113,7 +114,7 @@ export default {
       });
     },
     goList(){
-      this.$router.push({ name: "/carAuthor" });
+      this.$router.push({ path: "/carAuthor" });
     },
     closeTc() {
       this.shows = false;

@@ -78,6 +78,11 @@ export default {
           length: this.length,
           numArr: this.numArr,
         };
+      }else{
+        // 避免绑定车牌情况下渲染 更正车牌信息
+        this.datas = {
+          type: 1
+        }
       }
     });
   },
@@ -163,7 +168,8 @@ export default {
             console.log(res);
             if (res.status == "200") {
               _this.$toast("更正成功");
-              _this.$router.push({ path: "/myCar" });
+              this.$router.go(-1)
+              // _this.$router.replace({ path: "/myCar",query: { oper: 1 } });
             } else {
               _this.$toast(res.message);
             }
@@ -180,7 +186,8 @@ export default {
         dialogObj = _this.obj;
       this.show = false;
       if (dialogObj.flag == 2) {
-        _this.$router.push({ path: "/myCar" });
+        this.$router.go(-1)
+        // _this.$router.push({ path: "/myCar", query: { oper: 1} });
       }
     },
     affirms(e) {

@@ -410,6 +410,7 @@ export default {
   },
   watch: {
     datas: function (datas) {
+      console.log(datas)
       if (datas.type == 2) {
         this.formData["commonCard"] = datas.length;
         datas.numArr.forEach((item, index) => {
@@ -424,6 +425,10 @@ export default {
       }
     },
     flag: function (val) {},
+  },
+  deactivated() {
+    // 当前页面不活跃的情况下 formData为空对象 避免绑定车牌渲染之前的车牌数据
+    this.formData = {}
   },
   computed: {
     plate_license_1() {
