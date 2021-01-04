@@ -1,12 +1,24 @@
-// import Vue from 'vue'
-// import Router from 'vue-router'
 import router from '../../router'
 import axios from "axios";
-// Vue.use(Router)
-// const originalPush = Router.prototype.push
-// Router.prototype.push = function push(location) {
-//   return originalPush.call(this, location).catch(err => err)
-// }
+
+  /**
+ * 2020.12.31 杜晓伟
+ * 函数节流
+ * @param {*} fn 
+ * @param {*} gapTime 
+ */
+export const throttle = (fn, gapTime = 1000) => {
+  let _lastTime = null
+
+  // 返回新的函数
+  return function () {
+    let _nowTime = +new Date()
+    if (_nowTime - _lastTime > gapTime || !_lastTime) {
+      fn.apply(this, arguments) //将this和参数传给原函数
+      _lastTime = _nowTime
+    }
+  }
+}
  
   // 正则验证手机号
 export const checkPhone = phone => {
@@ -111,4 +123,14 @@ export const formatDate = (date, format) => {
       if (new RegExp("(" + k + ")").test(format))
         format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
     return format;
+  }
+
+  // 设置页面背景
+  export const setBg = (bg) => {
+    window.document.body.style.backgroundColor = bg;
+  }
+
+  // 离开页面清除背景
+  export const removeBg = () => {
+    window.document.body.style.backgroundColor = "";
   }

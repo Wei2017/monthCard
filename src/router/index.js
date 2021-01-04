@@ -18,6 +18,15 @@ const CarAuthor = () => import('views/carAuthor/carAuthor')
 const MyMonthCard = () => import('views/monthCard/myMonthCard')
 
 
+const MyInvoice = () => import('views/invoice/myInvoice')
+const SelectOpenInvoice = () => import('views/invoice/selectOpenInvoice')
+const OpenInvoice = () => import('views/invoice/openInvoice')
+const InvoiceHistory = () => import('views/invoice/invoiceHistory')
+const InvoiceDetails = () => import('views/invoice/invoiceDetails')
+const InvoiceOrderList = () => import('views/invoice/invoiceOrderList')
+const InvoicePreview = () => import('views/invoice/invoicePreview')
+
+
 
 const routes = [
   {
@@ -140,6 +149,63 @@ const routes = [
     },
     component: MyMonthCard,
   },
+  {//最新我的发票
+    path: '/myInvoice',
+    name: 'MyInvoice',
+    component: MyInvoice,
+    meta: {
+      title: '我的发票'
+    },
+  },
+  {//选择开电子发票列表
+    path: '/selectOpenInvoice',
+    name: 'SelectOpenInvoice',
+    component: SelectOpenInvoice,
+    meta: {
+      title: '开电子发票'
+    },
+  },
+  {//开电子发票
+    path: '/openInvoice',
+    name: 'OpenInvoice',
+    component: OpenInvoice,
+    meta: {
+      title: '开电子发票'
+    },
+  },
+  {//开票历史
+    path: '/invoiceHistory',
+    name: 'InvoiceHistory',
+    component: InvoiceHistory,
+    meta: {
+      title: '开票历史'
+    },
+  },
+  {//发票详情
+    path: '/invoiceDetails',
+    name: 'InvoiceDetails',
+    component: InvoiceDetails,
+    meta: {
+      title: '发票详情',
+      keepAlive: true
+    },
+  },
+  {//发票订单列表
+    path: '/invoiceOrderList',
+    name: 'InvoiceOrderList',
+    component: InvoiceOrderList,
+    meta: {
+      title: '发票订单'
+    },
+  },
+  {//发票预览&下载
+    path: '/invoicePreview',
+    name: 'InvoicePreview',
+    component: InvoicePreview,
+    meta: {
+      title: '发票预览'
+    }
+  }
 ]
 
 const router = createRouter({

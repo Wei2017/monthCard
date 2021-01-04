@@ -38,9 +38,20 @@ export const queryOldMonthCardsToShow = params => { return reqMethod('/api/produ
 export const saveMonthToProductAddCar = params => { return reqMethod('/api/product/weChat/saveMonthToProductAddCar', params)};//绑定车辆之前立即领取
 
 
+// 发票相关
 
-
-
+export const invoiceUserCarLicense = params => { return reqMethod('/api/fce/queryUserCarLicense', params)};//用户车牌列表
+export const invoiceSelectList = params => { return reqMethod('/api/fce/listParkIncomeOfficialAccount', params)};//选择开票列表
+export const invoiceTitleSave = params => { return reqMethod('/api/fce/saveInvoiceTitle', params)};//新增发票抬头
+export const invoiceTitleList = params => { return reqMethod('/api/fce/listInvoiceTitle', params)};//用户的所有发票抬头列表
+export const invoiceNewOpen = params => { return reqMethod('/api/fce/applyInvoiceOfficialAccount', params)};//公众号开票
+export const invoicePreview = params => { return reqMethod('/api/fce/pdfPreview', params)};//发票预览
+export const invoiceDelTitle = params => { return reqMethod('/api/fce/deletInvoiceTitle', params)};//删除发票抬头
+//开票历史
+export const invoiceHisInvoiceList = params => { return reqMethod('/api/fce/queryInvoiceHistory', params)};//选择开票列表
+export const invoiceDetails = params => { return reqMethod('/api/fce/querInvoiceHistoryDetail', params)};//开票详情
+export const invoiceReopen = params => { return reqMethod('/api/fce/redoInvoice', params)};//重推 || 重开发票
+export const invoiceOpenCar = params => { return reqMethod('/api/fce/queryUserInvoiceCarLicense', params)};//已开票的车牌列表
 
 
 
