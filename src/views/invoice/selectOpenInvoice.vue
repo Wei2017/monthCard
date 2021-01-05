@@ -841,10 +841,6 @@ input {
   height: 100%;
   overflow: hidden;
 }
-.tab-bar ::v-deep(.header-vant-tab) ::v-deep(.van-tabs__wrap) {
-  height: auto;
-  /* width: calc(100vw - 272px); */
-}
 
 .month-fixed-top {
   width: 100%;

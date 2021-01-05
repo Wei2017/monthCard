@@ -335,8 +335,8 @@ export default {
   color: #333;
 }
 
-.tab-bar ::v-deep .header-vant-tab ::v-deep .van-tabs__wrap {
-  height: auto;
+.tab-bar ::v-deep(.header-vant-tab) ::v-deep(.van-tabs__wrap) {
+  /* height: auto; */
   width: calc(750px - 150px);
 }
 
@@ -379,12 +379,12 @@ export default {
   transform: translate(-50%,-50%);
   padding: 0;
 }
-.custom-image ::v-deep .van-empty__image{
+.custom-image ::v-deep(.van-empty__image) {
   width: 238px;
   height: 182px;
 }
 
-.custom-image ::v-deep .van-empty__description{
+.custom-image ::v-deep(.van-empty__description) {
   margin-top: 40px;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="tab-bar-header row">
       <div class="header-vant-tab row">
         <van-tabs
-          v-model="tCurrIndex"
+          v-model:active="tCurrIndex"
           swipe-threshold="1"
           line-width="0"
           title-active-color="#333"
@@ -63,6 +63,7 @@ export default {
   },
   watch: {
     tabCurrIndex(i) {
+      console.log(123)
       this.tCurrIndex = i
     }
   },
