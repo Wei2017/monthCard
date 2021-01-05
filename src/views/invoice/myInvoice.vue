@@ -38,36 +38,37 @@
 <script>
 import { setBg, removeBg } from 'common/util/util'
 
-export default {
+import { defineComponent, ref, computed, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+export default defineComponent({
   name: "MyInvoice",
   components: {},
-  data() {
-    return {};
-  },
-  created() {},
-  mounted() {
-    setBg("#f5f5f5")
-  },
-  methods: {
-    // 页面跳转
-    jumpView(path, type = '') {
+  setup () {
+    const test = ref(2)
+    const route = useRoute()
+    const router = useRouter()
+    onMounted(() => {
+    })
+    const jumpView = (path, type = '') => {
       console.log(path)
       if(type != '') {
-        this.$router.push( { path, query: { type } })
+        router.push( { path, query: { type } })
         return
       }
-      this.$router.push( path )
+      router.push( path )
+    }
+    return {
+      jumpView
     }
   },
-  watch: {},
-  computed: {},
   activated() {
     setBg("#f5f5f5")
   },
   deactivated() {
     removeBg()
   }
-};
+});
 </script>
 <style scoped>
 .invoice-group,
