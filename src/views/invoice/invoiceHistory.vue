@@ -3,7 +3,6 @@
     <div class="ih-wrapper">
       <div class="history-list-wrap">
         <scroll
-          v-if="invoinceHisList.length > 0"
           class="content"
           ref="scroll"
           @pullingUp="loadMore"
@@ -16,7 +15,7 @@
             <li
               class="hist-list-item"
               @click="toDetails(item)"
-              v-for="(item, index) in invoinceHisList"
+              v-for="(item, index) in state.invoinceHisList"
               :key="index"
             >
               <div class="item-title row">
@@ -65,11 +64,11 @@
                 </div>
               </div>
             </li>
-            <div class="not-more" v-show="currentPage == pages">没有更多了</div>
+            <div class="not-more" v-show="state.currentPage == state.pages">没有更多了</div>
           </ul>
         </scroll>
 
-        <van-empty v-if="invoinceHisList.length == 0" class="custom-image"
+        <van-empty v-if="state.invoinceHisList.length == 0" class="custom-image"
   :image="seat"
   description="您还没有开票历史记录"/>
       </div>
@@ -86,7 +85,10 @@ import { setBg, removeBg } from 'common/util/util'
 
 import * as API from "network";
 
-export default {
+import { defineComponent, ref, computed, watch, onMounted, nextTick, reactive, onActivated, onDeactivated } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+export default defineComponent({
   name: "InvoiceHistory",
   components: {
     Scroll,
@@ -94,88 +96,82 @@ export default {
     [Tabs.name]: Tabs,
     [Empty.name]: Empty
   },
-  data() {
-    return {
-      seat: require("@/assets/img/invoice-history-seat.png"),
-      unionId: "o1cjJwTERPUHzO4lywh9kIzyqt_4",
-      invoinceHisList: [],
-      invoinceStatus: ["开票中", "已开票", "", "开票失败"],
+  setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+    const unionId = "o1cjJwTERPUHzO4lywh9kIzyqt_4"
+    const invoinceStatus = ["开票中", "已开票", "", "开票失败"]
 
+    const scroll = ref(null) //获取ref为scroll的代理对象
+    // reactive 返回对象的响应式副本
+    let state = reactive({
+      invoinceHisList: [],
       pages: 1, //总页数
       currentPage: 1, //页码
-      pageSize: 15, //条数
-    };
-  },
-  created() {},
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      const that = this
-      that.getOrderList()
-    },
-    async getOrderList() {
-      let that = this,
-        { unionId, currentPage, pageSize } = that,
-        params = {
+    })
+    const pageSize = 15 //条数
+    const init = () => {
+      getOrderList()
+    }
+    const getOrderList = async () => {
+      let params = {
           unionId,
-          currentPage,
+          currentPage: state.currentPage,
           pageSize,
           terminalType: "wxAccount",
         };
       await API.invoiceHisInvoiceList(params).then((res) => {
-        that.pages = res.data.pages;
-        that.invoinceHisList = [...that.invoinceHisList, ...res.data.detail];
+        state.pages = res.data.pages;
+        
+        state.invoinceHisList = [...state.invoinceHisList, ...res.data.detail];
       });
-
       // 重新计算滚动距离
-      this.$nextTick(() => {
-        this.$refs.scroll.refresh();
+      nextTick(() => {
+        // 调scroll中的refresh方法  vue2.0写法 this.$refs.scroll.refresh()
+        scroll.value.refresh();  //vue3.0
       });
 
       // 上拉加载结束后调用  finishPullUp组件中封装好的方法 才可继续上拉加载更多
-      this.$refs.scroll.finishPullUp();
-    },
-    // 列表项跳转
-    toDetails(item) {
-      console.log(item);
-      const that = this,
-        state = item.invoiceStatus;
-      if (state == 0) return;
+      scroll.value.finishPullUp();
 
-      if (state == 1)
-        this.$router.push({
+    }
+    onMounted(() => {
+      init()
+    })
+    const toDetails = (item) => {
+      console.log(item);
+      const status = item.invoiceStatus;
+      if (status == 0) return;
+
+      if (status == 1)
+        router.push({
           name: "InvoiceDetails",
           params: { detailInfo: JSON.stringify(item) },
         }); //开票成功
-      if (state == 3)
-        this.$router.push({
+      if (status == 3)
+        router.push({
           name: "OpenInvoice",
           params: { detailInfo: JSON.stringify(item) },
         }); //开票失败
-    },
-
-    // 上拉加载更多 触发子组件$emit自定义事件
-    loadMore() {
-      const that = this,
-        { currentPage, pages } = that;
+    }
+    const loadMore = () => {
+      const { currentPage, pages } = state;
       if (pages != 0) {
         if (currentPage == pages) {
           return;
         } else {
-          that.currentPage += 1;
-          that.getOrderList();
+          state.currentPage += 1;
+          getOrderList();
         }
       }
-
       console.log("到底了");
-    },
+    }
+    
     // 监听页面滚动
-    contentScroll(position) {
+    const contentScroll = (position) => {
       // console.log(position)
-    },
-    classFilter(state) {
+    }
+    const classFilter = (state) => {
       switch (state) {
         case 0:
           return "ing";
@@ -184,8 +180,8 @@ export default {
         case 3:
           return "fail";
       }
-    },
-    filterAcount(value) {
+    }
+    const filterAcount = (value) => {
       console.log(value);
       if (Number.isInteger(value)) {
         //是整数的时候
@@ -198,8 +194,8 @@ export default {
       } else {
         return res;
       }
-    },
-    filterTime(value) {
+    }
+    const filterTime = (value) => {
       if (value) {
         let yearDate = value.toString().split(" ")[0],
           yearDe = yearDate.toString().split("-"),
@@ -219,17 +215,37 @@ export default {
           timeDe.substring(0, 5)
         );
       }
-    },
+    }
+
+    // 当前页面处于活跃状态
+    onActivated(() => {
+      setBg("#f5f5f5")
+    })
+
+    // 不处于活跃状态
+    onDeactivated(() => {
+      removeBg()
+    })
+    return {
+      seat: require("@/assets/img/invoice-history-seat.png"),
+      invoinceStatus,
+      loadMore,
+      state,
+
+      toDetails,
+      contentScroll,
+      classFilter,
+      filterAcount,
+      filterTime,
+
+      scroll
+    };
   },
-  watch: {},
-  computed: {},
    activated() {
-    setBg("#f5f5f5")
   },
   deactivated() {
-    removeBg()
   }
-};
+});
 </script>
 <style scoped>
 /* 滚动区域的高度 */
